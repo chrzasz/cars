@@ -1,12 +1,14 @@
 package pl.inome.cars;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cars")
@@ -16,23 +18,33 @@ public class CarApi {
 
     public CarApi() {
         this.carList = new ArrayList<>();
-        carList.add(new Car(1L, CarMark.AUDI, "A3", CarColor.BLACK));
-        carList.add(new Car(2L, CarMark.BMW, "X3", CarColor.WHITE));
-        carList.add(new Car(3L, CarMark.WV, "Golf", CarColor.RED));
+        carList.add(new Car(1L, CarMark.AUDI, "A3", CarColor.black));
+        carList.add(new Car(2L, CarMark.BMW, "X3", CarColor.white));
+        carList.add(new Car(3L, CarMark.WV, "Golf", CarColor.red));
     }
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Car>> getCars() {
         return new ResponseEntity<>(carList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Car> getCarById(@PathVariable long id) {
         Optional<Car> first = carList.stream().filter(car -> car.getId() == id).findFirst();
         if (first.isPresent()) {
             return new ResponseEntity<>(first.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @GetMapping(value = "/color/{color}")
+    public List<Car> getCarByColor(@PathVariable CarColor color) {
+
+        List<Car> carsColored = carList.stream()
+                .filter(car -> car.getColor() == color)
+                .collect(Collectors.toList());
+        return carsColored;
     }
 
     @PostMapping
