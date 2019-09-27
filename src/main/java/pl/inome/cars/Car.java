@@ -59,22 +59,4 @@ public class Car {
                 '}';
     }
 
-    public static void main(String[] args) {
-
-        Car car = new Car();
-        car.setId(1L);
-        car.setMark(CarMark.AUDI);
-        car.setModel("A3");
-        car.setColor(CarColor.BLACK);
-
-        System.out.println(car);
-
-        CarMark carMark1 = CarMark.AUDI;
-        System.out.println(carMark1);
-
-        for (CarMark carMark : CarMark.values()) {
-            System.out.println(carMark.ordinal() + " " + carMark);
-
-        }
-    }
 }
