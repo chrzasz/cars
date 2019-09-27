@@ -39,12 +39,14 @@ public class CarApi {
 
 
     @GetMapping(value = "/color/{color}")
-    public List<Car> getCarByColor(@PathVariable CarColor color) {
+    public ResponseEntity<List<Car>> getCarByColor(@PathVariable CarColor color) {
 
         List<Car> carsColored = carList.stream()
                 .filter(car -> car.getColor() == color)
                 .collect(Collectors.toList());
-        return carsColored;
+
+        if (carsColored.isEmpty()) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(carsColored, HttpStatus.OK);
     }
 
     @PostMapping
@@ -77,4 +79,24 @@ public class CarApi {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity modifyCarById(@PathVariable long id,
+                                        @RequestParam(required = false) CarMark mark,
+                                        @RequestParam(required = false) String model,
+                                        @RequestParam(required = false) CarColor color) {
+
+        Optional<Car> first = carList.stream().filter(car -> car.getId() == id).findFirst();
+        if (first.isPresent()) {
+            Car newCar = first.get();
+            if (mark != null) newCar.setMark(mark);
+            if (model != null) newCar.setModel(model);
+            if (color != null) newCar.setColor(color);
+            carList.remove(first.get());
+            carList.add(newCar);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 }
