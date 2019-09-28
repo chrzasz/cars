@@ -1,9 +1,11 @@
 package pl.inome.cars;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.inome.cars.repository.CarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +18,17 @@ public class CarApi {
 
     List<Car> carList;
 
-    public CarApi() {
+    CarRepository carRepository;
+
+    @Autowired
+    public CarApi(CarRepository carRepository) {
+
         this.carList = new ArrayList<>();
         carList.add(new Car(1L, CarMark.AUDI, "A3", CarColor.black));
         carList.add(new Car(2L, CarMark.BMW, "X3", CarColor.white));
         carList.add(new Car(3L, CarMark.WV, "Golf", CarColor.red));
     }
+
 
     @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Car>> getCars() {
@@ -94,7 +101,7 @@ public class CarApi {
             if (color != null) newCar.setColor(color);
             carList.remove(first.get());
             carList.add(newCar);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.ACCEPTED);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }

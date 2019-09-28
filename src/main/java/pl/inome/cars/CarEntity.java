@@ -1,24 +1,30 @@
 package pl.inome.cars;
 
+import javax.persistence.*;
 
-public class Car {
+@Entity
+@Table(name = "car")
+public class CarEntity {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private CarMark mark;
     private String model;
     private CarColor color;
 
-    public Car() {
+    public CarEntity() {
     }
 
-    public Car(long id, CarMark mark, String model, CarColor color) {
-        this.id = id;
+
+    public CarEntity(CarMark mark, String model, CarColor color) {
         this.mark = mark;
         this.model = model;
         this.color = color;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
