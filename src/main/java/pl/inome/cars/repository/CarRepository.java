@@ -1,12 +1,15 @@
 package pl.inome.cars.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.inome.cars.CarEntity;
+import pl.inome.cars.model.Car;
+import pl.inome.cars.model.CarColor;
 
-import java.awt.*;
+import java.util.Optional;
 
-public interface CarRepository extends CrudRepository<CarEntity, Long> {
+public interface CarRepository extends CrudRepository<Car, Long> {
 
-    CarEntity findByColor(Color color);
+    Optional<Car> findById(Long id);
+
+    Iterable<Car> findByColor(CarColor color);
 
 }

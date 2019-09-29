@@ -1,4 +1,4 @@
-package pl.inome.cars;
+package pl.inome.cars.model;
 
 public enum CarColor {
     white,
