@@ -2,10 +2,7 @@ package pl.inome.cars.model;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Car {
@@ -14,11 +11,13 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.ORDINAL)
     private CarMark mark;
 
     @Length(min = 1, max = 32)
     private String model;
 
+    @Enumerated(EnumType.ORDINAL)
     private CarColor color;
 
     public Car() {
