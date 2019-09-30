@@ -36,8 +36,21 @@ public class CarService {
                 && car.getModel() != null) {
             carRepository.save(car);
             return true;
-        } else
-            return false;
+        }
+        return false;
+    }
+
+    public boolean updateCar(Long id, Car car) {
+        Optional<Car> first = carRepository.findById(id);
+        if (first.isPresent()) {
+            Car newCar = first.get();
+            if (car.getMark() != null) first.get().setMark(car.getMark());
+            if (car.getModel() != null) first.get().setModel(car.getModel());
+            if (car.getColor() != null) first.get().setColor(car.getColor());
+            carRepository.save(first.get());
+            return true;
+        }
+        return false;
     }
 
 }

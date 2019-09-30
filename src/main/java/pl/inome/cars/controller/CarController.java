@@ -51,13 +51,27 @@ public class CarController {
     @PostMapping
     @ApiOperation(value = "add/update car (ID is not required for adding new car)")
     public ResponseEntity<Car> addCar(@RequestBody Car newCar) {
-        return (carService.addCar(newCar)) ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        return (carService.addCar(newCar)) ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping
     @ApiOperation(value = "update car")
     public ResponseEntity updateCar(@RequestBody Car car) {
-        return (carService.addCar(car)) ? new ResponseEntity<>(HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        return (carService.updateCar(car.getId(), car))
+                ? new ResponseEntity<>(HttpStatus.ACCEPTED)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+    @PatchMapping
+    @ApiOperation(value = "update car")
+    public ResponseEntity modifyCarById(@PathVariable long id,
+                                        @RequestBody Car car) {
+        Optional<Car> first = carService.getCarById(id);
+        if (first.isPresent()) {
+            carService.updateCar(id, car);
+            return new ResponseEntity(HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 }
