@@ -1,11 +1,43 @@
 package pl.inome.cars.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.inome.cars.model.Car;
+import pl.inome.cars.model.CarColor;
 import pl.inome.cars.repository.CarRepository;
+
+import java.util.Optional;
 
 @Service
 public class CarService {
 
     private CarRepository carRepository;
+
+    @Autowired
+    public CarService(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
+
+    public Iterable<Car> getAllCars() {
+        return carRepository.findAll();
+    }
+
+    public Optional<Car> getCarById(Long id) {
+        return carRepository.findById(id);
+    }
+
+    public Iterable<Car> getCarsByColor(CarColor color) {
+        return carRepository.findByColor(color);
+    }
+
+    public boolean addCar(Car car) {
+        if (car.getColor() != null
+                && car.getMark() != null
+                && car.getModel() != null) {
+            carRepository.save(car);
+            return true;
+        } else
+            return false;
+    }
 
 }

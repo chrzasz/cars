@@ -3,6 +3,7 @@ package pl.inome.cars.model;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Car {
@@ -29,6 +30,7 @@ public class Car {
         this.model = model;
         this.color = color;
     }
+
 
     public Long getId() {
         return id;
@@ -72,4 +74,19 @@ public class Car {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id.equals(car.id) &&
+                mark == car.mark &&
+                Objects.equals(model, car.model) &&
+                color == car.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, mark, model, color);
+    }
 }
