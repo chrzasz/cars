@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <version>2.1.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.inome</groupId>
@@ -30,21 +30,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
@@ -56,7 +53,6 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
@@ -68,8 +64,8 @@
             <scope>runtime</scope>
         </dependency>
 
-
     </dependencies>
+
 
     <build>
         <plugins>

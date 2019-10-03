@@ -13,7 +13,7 @@ import pl.inome.cars.service.CarService;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cars")
+@RequestMapping("/api/v1/cars")
 public class CarController {
 
     private CarService carService;

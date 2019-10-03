@@ -53,4 +53,12 @@ public class CarService {
         return false;
     }
 
+    public boolean deleteCar(Long id) {
+        if (carRepository.findById(id).isPresent()) {
+            carRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 }
