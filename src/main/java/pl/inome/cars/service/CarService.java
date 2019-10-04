@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.inome.cars.model.Car;
 import pl.inome.cars.model.CarColor;
+import pl.inome.cars.model.CarMark;
 import pl.inome.cars.repository.CarRepository;
 
 import java.util.Optional;
@@ -28,6 +29,14 @@ public class CarService {
 
     public Iterable<Car> getCarsByColor(CarColor color) {
         return carRepository.findByColor(color);
+    }
+
+    public Iterable<Car> getCarsByMark(CarMark mark) {
+        return carRepository.findByMark(mark);
+    }
+
+    public Iterable<Car> getCarsByModel(String model) {
+        return carRepository.findByModelIsContaining(model);
     }
 
     public boolean addCar(Car car) {
