@@ -103,7 +103,7 @@ public class Main extends VerticalLayout {
 
     private void saveCar(Car car) {
         if ((carMarkComboBox.getValue() != null) &&
-                (!carModelTextField.getValue().isEmpty()) &&
+                (!carModelTextField.getValue().trim().isEmpty()) &&
                 (carColorComboBox.getValue() != null)) {
             car.setMark(carMarkComboBox.getValue());
             car.setModel(carModelTextField.getValue());
@@ -127,7 +127,7 @@ public class Main extends VerticalLayout {
     private void addCar() {
         Car car = new Car();
         if ((carMarkComboBox.getValue() != null) &&
-                (!carModelTextField.getValue().isEmpty()) &&
+                (!carModelTextField.getValue().trim().isEmpty()) &&
                 (carColorComboBox.getValue() != null)) {
             car.setMark(carMarkComboBox.getValue());
             car.setModel(carModelTextField.getValue());
