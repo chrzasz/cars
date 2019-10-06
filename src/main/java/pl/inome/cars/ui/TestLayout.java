@@ -4,28 +4,20 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-import org.apache.commons.lang3.StringUtils;
 import pl.inome.cars.model.Car;
 import pl.inome.cars.model.CarColor;
 import pl.inome.cars.model.CarMark;
 import pl.inome.cars.service.CarService;
 import pl.inome.cars.utils.CustomConverter;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Route
 public class TestLayout extends VerticalLayout {
@@ -35,23 +27,17 @@ public class TestLayout extends VerticalLayout {
     private TextField carModelTextField;
     private ComboBox<CarMark> carMarkComboBox;
     private ComboBox<CarColor> carColorComboBox;
-    //    private TextField filterCarModelTextField;
-//    private ComboBox<CarMark> filterCarMarkComboBox;
-//    private ComboBox<CarColor> filterCarColorComboBox;
     private Button saveButton;
     private Button deleteButton;
     private Button addButton;
     private Notification notification;
     private CustomConverter converter;
-    //    private ListDataProvider<Car> dataProvider;
-//    private Binder<Car> binder;
     private Car tmpCar;
 
 
     public TestLayout(CarService carService) {
         this.carService = carService;
         converter = new CustomConverter();
-//        binder = new Binder<>(Car.class);
         tmpCar = new Car();
 
         // Create the fields
@@ -85,53 +71,11 @@ public class TestLayout extends VerticalLayout {
         carGrid = new Grid<>();
         carGrid.setHeightByRows(true);
         refreshGrid();
-//        dataProvider = new ListDataProvider<>(carList);
-//        carGrid.setDataProvider(dataProvider);
-//        Grid.Column<Car> idColumn = carGrid
-//                .addColumn(Car::getId)
-//                .setHeader("ID");
-//        Grid.Column<Car> markColumn = carGrid
-//                .addColumn(Car::getMark)
-//                .setHeader("Mark");
-//
-//
-//        Grid.Column<Car> modelColumn = carGrid
-//                .addColumn(Car::getModel)
-//                .setHeader("Model");
-//        Grid.Column<Car> colorColumn = carGrid
-//                .addColumn(Car::getColor)
-//                .setHeader("Color");
-
         carGrid.addColumn(Car::getId).setHeader("ID");
         carGrid.addColumn(Car::getMark).setHeader("Mark");
         carGrid.addColumn(Car::getModel).setHeader("Model");
         carGrid.addColumn(Car::getColor).setHeader("Color");
 
-
-//        HeaderRow filterRow = carGrid.appendHeaderRow();
-//        // First filter
-//        filterCarMarkComboBox = new ComboBox<>();
-//        filterCarMarkComboBox.setItems(CarMark.values());
-//        filterCarMarkComboBox.addValueChangeListener(e -> applyFilter(dataProvider));
-//        filterRow.getCell(markColumn).setComponent(filterCarMarkComboBox);
-//        filterCarMarkComboBox.setSizeFull();
-//        // Second filter
-//        filterCarModelTextField = new TextField();
-//        filterCarModelTextField.addValueChangeListener(e -> dataProvider.addFilter(
-//                car -> StringUtils.containsIgnoreCase(car.getModel(),
-//                        filterCarModelTextField.getValue())));
-//        filterCarModelTextField.setValueChangeMode(ValueChangeMode.EAGER);
-//        filterRow.getCell(modelColumn).setComponent(filterCarModelTextField);
-//        filterCarModelTextField.setSizeFull();
-//        filterCarModelTextField.setPlaceholder("Filter");
-//        // Third filter
-//        filterCarColorComboBox = new ComboBox<>();
-//        filterCarColorComboBox.setItems(CarColor.values());
-//        filterCarColorComboBox.addValueChangeListener(e -> applyFilter(dataProvider));
-//        filterRow.getCell(colorColumn).setComponent(filterCarColorComboBox);
-//        filterCarColorComboBox.setSizeFull();
-//
-//
         addButton.addClickListener(e -> addCar());
         saveButton.addClickListener(e -> saveCar(tmpCar));
         deleteButton.addClickListener(e -> deleteCar(tmpCar));
@@ -140,8 +84,6 @@ public class TestLayout extends VerticalLayout {
         carGrid.addItemClickListener(e -> {
             enableButtons(true);
             tmpCar = e.getItem();
-            notification.setText("tmpCar: " + tmpCar.toString());
-            notification.open();
             carMarkComboBox.setValue(tmpCar.getMark());
             carModelTextField.setValue(tmpCar.getModel());
             carColorComboBox.setValue(tmpCar.getColor());
@@ -201,14 +143,6 @@ public class TestLayout extends VerticalLayout {
     private void refreshGrid() {
         carGrid.setItems(converter.getListFromIteralbe(carService.getAllCars()));
         carGrid.getDataProvider().refreshAll();
-    }
-
-    private void applyFilter(ListDataProvider<Car> dataProvider) {
-        dataProvider.clearFilters();
-        if (carMarkComboBox.getValue() != null)
-            dataProvider.addFilter(car -> carMarkComboBox.getValue() == car.getMark());
-        if (carColorComboBox.getValue() != null)
-            dataProvider.addFilter(car -> carColorComboBox.getValue() == car.getColor());
     }
 
     private void enableButtons(boolean enable) {
