@@ -30,6 +30,7 @@ public class Main extends VerticalLayout {
     private Button saveButton;
     private Button deleteButton;
     private Button addButton;
+    private Button cancelButton;
     private Notification notification;
     private CustomConverter converter;
     private Car tmpCar;
@@ -53,6 +54,7 @@ public class Main extends VerticalLayout {
         saveButton = new Button("Save", VaadinIcon.CHECK.create());
         deleteButton = new Button("Delete", VaadinIcon.TRASH.create());
         addButton = new Button("Add Car", VaadinIcon.PLUS.create());
+        cancelButton = new Button("Esc", VaadinIcon.EXIT_O.create());
 
         // Edit fields bar
         HorizontalLayout editFieldsLayout = new HorizontalLayout();
@@ -62,9 +64,10 @@ public class Main extends VerticalLayout {
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonsLayout.add(addButton, saveButton, deleteButton);
+        buttonsLayout.add(addButton, saveButton, deleteButton, cancelButton);
         addButton.getStyle().set("mariginRight", "10px");
         saveButton.getStyle().set("mariginRight", "10px");
+        deleteButton.getStyle().set("mariginRight", "10px");
         enableButtons(false);
 
         // Grid
@@ -80,6 +83,7 @@ public class Main extends VerticalLayout {
         addButton.addClickListener(e -> addCar());
         saveButton.addClickListener(e -> saveCar(tmpCar));
         deleteButton.addClickListener(e -> deleteCar(tmpCar));
+        cancelButton.addClickListener(e -> enableButtons(false));
 
         carGrid.addItemClickListener(e -> {
             enableButtons(true);
@@ -131,7 +135,7 @@ public class Main extends VerticalLayout {
             carService.addCar(car);
             refreshGrid();
         } else {
-            notification.setText("Not added. Select all required fields.");
+            notification.setText("Not added. Select all fields.");
             notification.open();
         }
     }
@@ -144,6 +148,7 @@ public class Main extends VerticalLayout {
     private void enableButtons(boolean enable) {
         saveButton.setEnabled(enable);
         deleteButton.setEnabled(enable);
+        cancelButton.setEnabled(enable);
         addButton.setEnabled(!enable);
     }
 

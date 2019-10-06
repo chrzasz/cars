@@ -9,3 +9,7 @@ H2 database supprt
 Vaadin 13 UI
 
 `http://localhost:8080/`
+
+Vaadin GUI on Heroku : https://carssvaadin.herokuapp.com/
+
+API: https://carssvaadin.herokuapp.com/swagger-ui.html
