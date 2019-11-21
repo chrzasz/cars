@@ -21,14 +21,17 @@ public class Car {
     @Enumerated(EnumType.ORDINAL)
     private CarColor color;
 
+    private String productionYear;
+
     public Car() {
     }
 
 
-    public Car(CarMark mark, String model, CarColor color) {
+    public Car(CarMark mark, String model, CarColor color, String productionYear) {
         this.mark = mark;
         this.model = model;
         this.color = color;
+        this.productionYear = productionYear;
     }
 
 
@@ -64,6 +67,14 @@ public class Car {
         this.color = color;
     }
 
+    public String getProductionYear() {
+        return productionYear;
+    }
+
+    public void setProductionYear(String productionYear) {
+        this.productionYear = productionYear;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -71,6 +82,7 @@ public class Car {
                 ", mark=" + mark +
                 ", model='" + model + '\'' +
                 ", color=" + color +
+                ", productionYear=" + productionYear +
                 '}';
     }
 
@@ -82,11 +94,12 @@ public class Car {
         return id.equals(car.id) &&
                 mark == car.mark &&
                 Objects.equals(model, car.model) &&
-                color == car.color;
+                color == car.color &&
+                productionYear == car.productionYear;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mark, model, color);
+        return Objects.hash(id);
     }
 }

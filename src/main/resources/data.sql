@@ -1,6 +1,12 @@
-insert into car(color, mark, model)
-values (0, 1, 'X5');
-insert into car(color, mark, model)
-values (0, 2, 'CLA');
-insert into car(color, mark, model)
-values (3, 3, 'Golf V');
+insert into car(color, mark, model, production_year)
+values (0, 1, 'F30', 2016),
+       (0, 1, 'F45', 2017),
+       (0, 1, 'F26', 2018),
+       (0, 1, 'F16', 2019),
+       (0, 1, 'F10', 2018),
+       (3, 1, 'G30', 2018),
+       (3, 1, 'G32', 2018),
+       (3, 1, 'i3', 2019),
+       (1, 1, 'X4', 2019),
+       (0, 2, 'CLA', 2017),
+       (3, 3, 'Golf V', 2015);
