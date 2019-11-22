@@ -21,8 +21,10 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 
     Iterable<Car> findByProductionYearIsLessThanEqual(String year);
 
-    @Query(value = "SELECT * FROM car WHERE car.production_year >= :min AND car.production_year <= :max", nativeQuery = true)
-    Iterable<Car> findByYearRange(String min, String max);
+//    @Query(value = "SELECT * FROM car WHERE car.production_year >= :min AND car.production_year <= :max", nativeQuery = true)
+//    Iterable<Car> findByYearRange(@Param("min") String min, @Param("max") String max);
+
+    Iterable<Car> findByProductionYearBetweenOrderByProductionYearDesc(String min, String max);
 
     @Query("select c from Car c where " +
             "c.mark like :carMark and " +
@@ -31,5 +33,6 @@ public interface CarRepository extends CrudRepository<Car, Long> {
             "c.productionYear>= :yearMin and " +
             "c.productionYear<=:yearMax")
     Iterable<Car> filter(CarMark carMark, String model, CarColor color, String yearMin, String yearMax);
+
 
 }

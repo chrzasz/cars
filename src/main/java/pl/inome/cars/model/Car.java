@@ -3,6 +3,7 @@ package pl.inome.cars.model;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -24,17 +25,24 @@ public class Car {
     @Length(max = 4)
     private String productionYear;
 
+    @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Timestamp created;
+
+    @Column(name = "last_edited", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Timestamp lastEdited;
+
     public Car() {
     }
 
-
-    public Car(CarMark mark, String model, CarColor color, String productionYear) {
+    public Car(CarMark mark, @Length(min = 1, max = 32) String model, CarColor color,
+               @Length(max = 4) String productionYear, Timestamp created, Timestamp lastEdited) {
         this.mark = mark;
         this.model = model;
         this.color = color;
         this.productionYear = productionYear;
+        this.created = created;
+        this.lastEdited = lastEdited;
     }
-
 
     public Long getId() {
         return id;
@@ -76,6 +84,22 @@ public class Car {
         this.productionYear = productionYear;
     }
 
+    public Timestamp getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(Timestamp lastEdited) {
+        this.lastEdited = lastEdited;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -96,7 +120,7 @@ public class Car {
                 mark == car.mark &&
                 Objects.equals(model, car.model) &&
                 color == car.color &&
-                productionYear == car.productionYear;
+                productionYear.equals(car.productionYear);
     }
 
     @Override

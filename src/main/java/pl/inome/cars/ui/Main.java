@@ -21,7 +21,6 @@ import pl.inome.cars.model.Car;
 import pl.inome.cars.model.CarColor;
 import pl.inome.cars.model.CarMark;
 import pl.inome.cars.service.CarService;
-import pl.inome.cars.utils.CustomConverter;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -42,7 +41,6 @@ public class Main extends VerticalLayout {
     private Button cancelButton;
     private Button toggleButton;
     private Notification notification;
-    private CustomConverter converter;
     private Car tmpCar;
     private List<Car> carList;
     private ComboBox<CarMark> carMarkPicker;
@@ -52,7 +50,6 @@ public class Main extends VerticalLayout {
 
     public Main(CarService carService) {
         this.carService = carService;
-        converter = new CustomConverter();
         tmpCar = new Car();
         carList = new ArrayList<>();
         getAllCars();
@@ -83,16 +80,14 @@ public class Main extends VerticalLayout {
         deleteButton = new Button("Delete", VaadinIcon.TRASH.create(), e -> deleteCar(tmpCar));
         cancelButton = new Button("Esc", VaadinIcon.EXIT_O.create(), e -> enableButtons(false));
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        addButton.getStyle().set("mariginRight", "10px");
-        saveButton.getStyle().set("mariginRight", "10px");
-        deleteButton.getStyle().set("mariginRight", "10px");
-        toggleButton = new Button(VaadinIcon.CIRCLE.create(), click -> {
+        toggleButton = new Button("Theme", VaadinIcon.CIRCLE.create(), click -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
             if (themeList.contains(Lumo.DARK)) {
                 themeList.remove(Lumo.DARK);
+                toggleButton.setIcon(VaadinIcon.CIRCLE.create());
             } else {
                 themeList.add(Lumo.DARK);
+                toggleButton.setIcon(VaadinIcon.CIRCLE_THIN.create());
             }
         });
         editFieldsLayout.add(carMarkComboBox, carModelTextField, carColorComboBox, carProductionYearField, addButton, saveButton, deleteButton, cancelButton, toggleButton);
@@ -104,15 +99,14 @@ public class Main extends VerticalLayout {
                 new FormLayout.ResponsiveStep("36em", 5));
         enableButtons(false);
         accordion.add("Modify", editFieldsLayout).addThemeVariants(DetailsVariant.FILLED);
-        ;
 
         // FILTERS ACCORDION
         FormLayout filtersLayout = new FormLayout();
         carMarkPicker = new ComboBox<>("mark");
         carMarkPicker.setItems(EnumSet.allOf(CarMark.class));
         carMarkPicker.addValueChangeListener(e -> filterCarList());
-        minYearPicker = new TextField("min year", e -> updateCarListByYearRange());
-        maxYearPicker = new TextField("max year", e -> updateCarListByYearRange());
+        minYearPicker = new TextField("min year", e -> filterCarListByYearRange());
+        maxYearPicker = new TextField("max year", e -> filterCarListByYearRange());
         minYearPicker.setPlaceholder("filter");
         maxYearPicker.setPlaceholder("filter");
         minYearPicker.setValueChangeMode(ValueChangeMode.EAGER);
@@ -162,26 +156,21 @@ public class Main extends VerticalLayout {
         if (carMarkPicker.getValue() != null &&
                 minYearPicker.getValue().trim().isEmpty() &&
                 maxYearPicker.getValue().trim().isEmpty()) {
-            carList = converter.getListFromIteralbe(carService.getCarsByMark(carMarkPicker.getValue()));
+            carList = carService.getCarsByMark(carMarkPicker.getValue());
         } else {
             getAllCars();
         }
         refreshGrid(carList);
-
     }
 
-
-    private void updateCarListByYearRange() {
+    private void filterCarListByYearRange() {
         if (!minYearPicker.isEmpty() && minYearPicker.getValue().length() <= 4 && maxYearPicker.isEmpty()) {
-            carList = converter.getListFromIteralbe(
-                    carService.getCarsByYearIsGreaterThanEqual(minYearPicker.getValue()));
+            carList = carService.getCarsByYearIsGreaterThanEqual(minYearPicker.getValue());
         } else if (minYearPicker.isEmpty() && !maxYearPicker.isEmpty() && maxYearPicker.getValue().length() <= 4) {
-            carList = converter.getListFromIteralbe(
-                    carService.getCarsByYearIsLessThanEqual(maxYearPicker.getValue()));
+            carList = carService.getCarsByYearIsLessThanEqual(maxYearPicker.getValue());
         } else if (!minYearPicker.isEmpty() && minYearPicker.getValue().length() <= 4 &&
                 !maxYearPicker.isEmpty() && maxYearPicker.getValue().length() <= 4) {
-            carList = converter.getListFromIteralbe(
-                    carService.getCarsByYearRange(minYearPicker.getValue(), maxYearPicker.getValue()));
+            carList = carService.getCarsByYearRange(minYearPicker.getValue(), maxYearPicker.getValue());
         } else getAllCars();
         refreshGrid(carList);
     }
@@ -200,7 +189,6 @@ public class Main extends VerticalLayout {
             carList.set(carList.indexOf(car), car);
             refreshGrid(carList);
             enableButtons(false);
-            accordion.close();
         } else {
             notification.setText("Not saved. Select all fields.");
             notification.open();
@@ -212,7 +200,6 @@ public class Main extends VerticalLayout {
         carList.remove(car);
         refreshGrid(carList);
         enableButtons(false);
-        accordion.close();
     }
 
     private void addCar() {
@@ -228,7 +215,6 @@ public class Main extends VerticalLayout {
             car.setProductionYear(carProductionYearField.getValue().trim());
             if (carService.addCar(car)) carList.add(car);
             refreshGrid(carList);
-            accordion.close();
         } else {
             notification.setText("Not added. Select all fields.");
             notification.open();
@@ -236,7 +222,7 @@ public class Main extends VerticalLayout {
     }
 
     private void getAllCars() {
-        carList = converter.getListFromIteralbe(carService.getAllCars());
+        carList = carService.getAllCars();
     }
 
     private void refreshGrid(List<Car> carList) {
