@@ -21,6 +21,7 @@ public class Car {
     @Enumerated(EnumType.ORDINAL)
     private CarColor color;
 
+    @Length(max = 4)
     private String productionYear;
 
     public Car() {

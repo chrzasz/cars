@@ -36,7 +36,7 @@ public class CarService {
     }
 
     public Iterable<Car> getCarsByModel(String model) {
-        return carRepository.findByModelIsContaining(model);
+        return carRepository.findByModelIsContainingIgnoreCase(model);
     }
 
     public Iterable<Car> getCarsByYear(String year) {
@@ -55,10 +55,17 @@ public class CarService {
         return carRepository.findByYearRange(min, max);
     }
 
+    public Iterable<Car> getFilteredCars(CarMark carMark, String model, CarColor color, String yearMin, String yearMax) {
+        return carRepository.filter(carMark, model, color, yearMin, yearMax);
+    }
+
+
     public boolean addCar(Car car) {
         if (car.getColor() != null
                 && car.getMark() != null
-                && car.getModel() != null) {
+                && car.getModel() != null
+                && car.getProductionYear() != null
+                && car.getProductionYear().length() <= 4) {
             carRepository.save(car);
             return true;
         }
@@ -71,6 +78,8 @@ public class CarService {
             if (car.getMark() != null) first.get().setMark(car.getMark());
             if (car.getModel() != null) first.get().setModel(car.getModel());
             if (car.getColor() != null) first.get().setColor(car.getColor());
+            if (car.getProductionYear() != null && car.getProductionYear().length() <= 4)
+                first.get().setProductionYear(car.getProductionYear());
             carRepository.save(first.get());
             return true;
         }
