@@ -19,7 +19,6 @@ public class CarService {
     private CarRepository carRepository;
     private CustomConverter converter;
 
-
     @Autowired
     public CarService(CarRepository carRepository) {
         this.carRepository = carRepository;
@@ -56,10 +55,6 @@ public class CarService {
 
     public List<Car> getCarsByYearIsLessThanEqual(String year) {
         return converter.getListFromIteralbe(carRepository.findByProductionYearIsLessThanEqual(year));
-    }
-
-    public List<Car> getFilteredCars(CarMark carMark, String model, CarColor color, String yearMin, String yearMax) {
-        return converter.getListFromIteralbe(carRepository.filter(carMark, model, color, yearMin, yearMax));
     }
 
     public List<Car> getCarsByYearRange(String min, String max) {
