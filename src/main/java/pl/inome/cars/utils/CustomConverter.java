@@ -8,7 +8,7 @@ import java.util.stream.StreamSupport;
 
 public class CustomConverter {
 
-    public <T> Collection<T> getCollectionFromIteralbe(Iterable<T> itr) {
+    public <T> Collection<T> getCollectionFromIterable(Iterable<T> itr) {
         // Create an empty Collection to hold the result
         Collection<T> cltn = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class CustomConverter {
         return new ArrayList<>(collection);
     }
 
-    public <T> List<T> getListFromIteralbe(Iterable<T> itr) {
+    public <T> List<T> getListFromIterable(Iterable<T> itr) {
         // Create an empty Collection to hold the result
         Collection<T> cltn = new ArrayList<>();
 

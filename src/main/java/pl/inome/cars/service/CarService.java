@@ -26,7 +26,7 @@ public class CarService {
     }
 
     public List<Car> getAllCars() {
-        return converter.getListFromIteralbe(carRepository.findAll());
+        return converter.getListFromIterable(carRepository.findAll());
     }
 
     public Optional<Car> getCarById(Long id) {
@@ -34,31 +34,31 @@ public class CarService {
     }
 
     public List<Car> getCarsByColor(CarColor color) {
-        return converter.getListFromIteralbe(carRepository.findByColor(color));
+        return converter.getListFromIterable(carRepository.findByColor(color));
     }
 
     public List<Car> getCarsByMark(CarMark mark) {
-        return converter.getListFromIteralbe(carRepository.findByMark(mark));
+        return converter.getListFromIterable(carRepository.findByMark(mark));
     }
 
     public List<Car> getCarsByModel(String model) {
-        return converter.getListFromIteralbe(carRepository.findByModelIsContainingIgnoreCase(model));
+        return converter.getListFromIterable(carRepository.findByModelIsContainingIgnoreCase(model));
     }
 
     public List<Car> getCarsByYear(String year) {
-        return converter.getListFromIteralbe(carRepository.findByProductionYearIsContaining(year));
+        return converter.getListFromIterable(carRepository.findByProductionYearIsContaining(year));
     }
 
     public List<Car> getCarsByYearIsGreaterThanEqual(String year) {
-        return converter.getListFromIteralbe(carRepository.findByProductionYearIsGreaterThanEqual(year));
+        return converter.getListFromIterable(carRepository.findByProductionYearIsGreaterThanEqual(year));
     }
 
     public List<Car> getCarsByYearIsLessThanEqual(String year) {
-        return converter.getListFromIteralbe(carRepository.findByProductionYearIsLessThanEqual(year));
+        return converter.getListFromIterable(carRepository.findByProductionYearIsLessThanEqual(year));
     }
 
     public List<Car> getCarsByYearRange(String min, String max) {
-        return converter.getListFromIteralbe(carRepository.findByProductionYearBetweenOrderByProductionYearDesc(min, max));
+        return converter.getListFromIterable(carRepository.findByProductionYearBetweenOrderByProductionYearDesc(min, max));
     }
 
     public boolean addCar(Car car) {
@@ -67,7 +67,6 @@ public class CarService {
                 && car.getModel() != null
                 && car.getProductionYear() != null
                 && car.getProductionYear().length() <= 4) {
-            car.setCreated(Timestamp.valueOf(LocalDateTime.now()));
             carRepository.save(car);
             return true;
         }

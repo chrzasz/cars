@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -32,15 +33,16 @@ public class Car {
     private Timestamp lastEdited;
 
     public Car() {
+        this.created = Timestamp.valueOf(LocalDateTime.now());
     }
 
     public Car(CarMark mark, @Length(min = 1, max = 32) String model, CarColor color,
-               @Length(max = 4) String productionYear, Timestamp created, Timestamp lastEdited) {
+               @Length(max = 4) String productionYear, Timestamp lastEdited) {
         this.mark = mark;
         this.model = model;
         this.color = color;
         this.productionYear = productionYear;
-        this.created = created;
+        this.created = Timestamp.valueOf(LocalDateTime.now());
         this.lastEdited = lastEdited;
     }
 
